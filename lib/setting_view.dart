@@ -16,7 +16,6 @@ class _SettingViewState extends State<SettingView> {
   String _ipString;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getIPValuesSF();
   }
