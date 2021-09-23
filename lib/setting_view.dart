@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingView extends StatefulWidget {
-  Function callbackfun;
+import 'main.dart';
 
-  SettingView({this.callbackfun});
+class SettingView extends StatefulWidget {
 
   @override
   _SettingViewState createState() => _SettingViewState();
@@ -29,8 +28,10 @@ class _SettingViewState extends State<SettingView> {
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
-              widget.callbackfun();
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => MainPage()));
             },
           ),
           title: Text("Cấu hình thiết bị"),

@@ -18,7 +18,7 @@ class MyStateLess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyStateLess1(),
+      home: MainPage(),
       theme: ThemeData(
           primaryColor: Color(0xff2196f3),
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -34,12 +34,12 @@ class MyStateLess extends StatelessWidget {
   }
 }
 
-class MyStateLess1 extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  State<MyStateLess1> createState() => _MyStateLess1State();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyStateLess1State extends State<MyStateLess1> {
+class _MainPageState extends State<MainPage> {
   StreamController<List<double>> _controller = StreamController<List<double>>();
 
   GlobalKey<_MyStateFullState> statefulKey = new GlobalKey<_MyStateFullState>();
@@ -56,15 +56,11 @@ class _MyStateLess1State extends State<MyStateLess1> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushReplacement(
                     context,
-                    PageTransition(
-                        type: PageTransitionType.rightToLeftWithFade,
-                        child: SettingView(callbackfun: (){
-                          setState(() {
-                            ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: Text("Đang cập nhật lại địa chỉ IP"),));
-                          }); // reloads
-                        },)));
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => SettingView()));
               },
               icon: Icon(Icons.settings)),
         ],
@@ -89,8 +85,8 @@ class _MyStateLess1State extends State<MyStateLess1> {
               onDirectionChanged: (degree, direction) {
                 degree *= math.pi / 180;
                 double temp = direction * 127;
-                math.Point npoint =
-                    math.Point(math.sin(degree) * temp, math.cos(degree) * temp);
+                math.Point npoint = math.Point(
+                    math.sin(degree) * temp, math.cos(degree) * temp);
 
                 List<double> tempS = new List<double>();
 
@@ -107,7 +103,8 @@ class _MyStateLess1State extends State<MyStateLess1> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
                 color: Colors.white,
               ),
               width: double.infinity,
@@ -168,10 +165,10 @@ class _MyStateFullState extends State<MyStateFull> {
   void channelConnect() {
     try {
       // ket noi den webscoket server ws://serverIP:81
-      String wsUrl = "ws://"+_ipString+ ":81";
+      String wsUrl = "ws://" + _ipString + ":81";
       print(wsUrl);
       ioWebSocketChannel = IOWebSocketChannel.connect(wsUrl);
-      
+
       print("Khoi tao websocket thanh cong");
       // listen
       ioWebSocketChannel.stream.listen((event) {
@@ -200,7 +197,7 @@ class _MyStateFullState extends State<MyStateFull> {
   @override
   void initState() {
     super.initState();
-    getIPValuesSF(); 
+    getIPValuesSF();
     widget.stream.listen((event) async {
       if (mounted)
         setState(() {
@@ -260,12 +257,12 @@ class _MyStateFullState extends State<MyStateFull> {
       print("Websocket is not connected");
     }
   }
+
   Future<void> getIPValuesSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-     
-     setState(() {
+
+    setState(() {
       _ipString = (prefs.getString('ipAddress')) ?? 'Chua lay duoc';
     });
-    
   }
 }
