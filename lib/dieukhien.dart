@@ -4,13 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DieuKhien extends StatefulWidget {
   final Stream<List<double>> stream;
-  DieuKhien({Key key, @required this.stream}) : super(key: key);
+  Function(bool) callbackScan;
+  DieuKhien({Key key, @required this.stream, @required this.callbackScan}) : super(key: key);
 
   @override
   DieuKhienState createState() => DieuKhienState();
 }
 
 class DieuKhienState extends State<DieuKhien> {
+  
   double _xDirection = 0.0;
   double _yDirection = 0.0;
   IOWebSocketChannel ioWebSocketChannel;
@@ -22,8 +24,8 @@ class DieuKhienState extends State<DieuKhien> {
       String wsUrl = "ws://" + _ipString + ":81";
       print(wsUrl);
       ioWebSocketChannel = IOWebSocketChannel.connect(wsUrl);
+      print("Đang chờ kết nối với server");
 
-      print("Khoi tao websocket thanh cong");
       // listen
       ioWebSocketChannel.stream.listen((event) {
         print(event);
@@ -31,17 +33,25 @@ class DieuKhienState extends State<DieuKhien> {
           setState(() {
             if (event == "connected") {
               connected = true;
+            } else {
+              print("dang cho...");
+              connected = false;
             }
           });
       }, onDone: () {
         // ket thuc websocket
         print("Websocket da dong");
+        widget.callbackScan(false);
         if (mounted)
           setState(() {
             connected = false;
           });
       }, onError: (error) {
         print(error.toString());
+        if (mounted)
+          setState(() {
+            connected = false;
+          });
       });
     } catch (_) {
       print("Co loi khi tao websocket");

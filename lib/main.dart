@@ -40,7 +40,12 @@ class _MainPageState extends State<MainPage> {
   StreamController<List<double>> _controller = StreamController<List<double>>();
 
   GlobalKey<DieuKhienState> statefulKey = new GlobalKey<DieuKhienState>();
-
+  bool _isActive = true;
+  callBackScan(value) {
+    if(mounted) setState(() {
+      _isActive = value;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +77,7 @@ class _MainPageState extends State<MainPage> {
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
+        child: _isActive ? Column(
           children: <Widget>[
             Padding(padding: const EdgeInsets.only(top: 10)),
             Buttons(),
@@ -95,7 +100,7 @@ class _MainPageState extends State<MainPage> {
               size: 200,
             ),
             Spacer(),
-            DieuKhien(stream: _controller.stream, key: statefulKey),
+            DieuKhien(stream: _controller.stream, key: statefulKey,callbackScan: callBackScan,),
             Spacer(),
             Container(
               decoration: BoxDecoration(
@@ -139,7 +144,45 @@ class _MainPageState extends State<MainPage> {
               ),
             )
           ],
-        ),
+        ) : Container(
+                  alignment: AlignmentDirectional.center,
+                  decoration: new BoxDecoration(
+                    color: Colors.white70,
+                  ),
+                  child: new Container(
+                    decoration: new BoxDecoration(
+                      color: Colors.blue[200],
+                      borderRadius: new BorderRadius.circular(10.0)
+                    ),
+                    width: 300.0,
+                    height: 200.0,
+                    alignment: AlignmentDirectional.center,
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Center(
+                          child: new SizedBox(
+                            height: 50.0,
+                            width: 50.0,
+                            child: new CircularProgressIndicator(
+                              value: null,
+                              strokeWidth: 7.0,
+                            ),
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.only(top: 25.0),
+                          child: new Center(
+                            child: new Text(
+                              "loading.. wait...",
+                              style: new TextStyle(
+                                color: Colors.white
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]))),
       ),
     );
   }
