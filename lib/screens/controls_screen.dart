@@ -60,8 +60,15 @@ class _ControlsScreenState extends State<ControlsScreen> {
 
     PadButtonPressedCallback padButtonPressed(
         int buttonIndex, Gestures gesture) {
-      String data = 'Button Index :$buttonIndex';
-      print(data);
+      // String data = 'Button Index :$buttonIndex';
+      if (buttonIndex == 1) {
+        // buzzer
+        if (gesture == Gestures.TAPDOWN) {
+          _channel.sink.add('buzzerOn'); // send digital high
+        } else {
+          _channel.sink.add('buzzerOff'); // send digital low
+        }
+      }
     }
 
     var body = Row(
@@ -85,6 +92,11 @@ class _ControlsScreenState extends State<ControlsScreen> {
                 backgroundColor: Color(0xfff44336),
                 pressedColor: Color(0xff1a237e)),
             PadButtonItem(
+                supportedGestures: [
+                  Gestures.TAPDOWN,
+                  Gestures.TAPUP,
+                  Gestures.LONGPRESSUP
+                ],
                 index: 1,
                 buttonIcon: Icon(Icons.notifications_active),
                 backgroundColor: Color(0xff40c4ff),

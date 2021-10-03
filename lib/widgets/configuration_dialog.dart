@@ -14,7 +14,6 @@ class _ConfigurationDialogState extends State<ConfigurationDialog> {
   String _ipString;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getIPValuesSF();
   }
