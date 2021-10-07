@@ -1,14 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:control_pad/models/gestures.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'package:control_pad/views/pad_button_view.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testjoytick/widgets/pad_button_items.dart';
-import 'package:web_socket_channel/io.dart';
 import 'dart:math' as math;
 import '../widgets/configuration_dialog.dart';
 import '../widgets/speed_slider.dart';
 import '../widgets/box_ip.dart';
+import '../widgets/pad_button_items.dart';
 
 class ControlsScreen extends StatefulWidget {
   @override
