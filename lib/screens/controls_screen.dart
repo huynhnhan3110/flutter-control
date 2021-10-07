@@ -1,12 +1,14 @@
 import 'package:control_pad/models/gestures.dart';
-import 'package:control_pad/models/pad_button_item.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'package:control_pad/views/pad_button_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:testjoytick/widgets/pad_button_items.dart';
 import 'package:web_socket_channel/io.dart';
 import 'dart:math' as math;
 import '../widgets/configuration_dialog.dart';
+import '../widgets/speed_slider.dart';
+import '../widgets/box_ip.dart';
 
 class ControlsScreen extends StatefulWidget {
   @override
@@ -46,10 +48,7 @@ class _ControlsScreenState extends State<ControlsScreen> {
       });
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    JoystickDirectionCallback onDirectionChanged(
+  void onDirectionChanged(
         double degree, double distance) {
       degree *= math.pi / 180;
       double temp = distance * 127;
@@ -58,7 +57,7 @@ class _ControlsScreenState extends State<ControlsScreen> {
       _writeData(npoint.x.toDouble(), npoint.y.toDouble());
     }
 
-    PadButtonPressedCallback padButtonPressed(
+    void padButtonPressed(
         int buttonIndex, Gestures gesture) {
       // String data = 'Button Index :$buttonIndex';
       if (buttonIndex == 1) {
@@ -70,6 +69,9 @@ class _ControlsScreenState extends State<ControlsScreen> {
         }
       }
     }
+  @override
+  Widget build(BuildContext context) {
+    
 
     var body = Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -85,28 +87,7 @@ class _ControlsScreenState extends State<ControlsScreen> {
           buttonsPadding: 10,
           size: 200,
           padButtonPressedCallback: padButtonPressed,
-          buttons: [
-            PadButtonItem(
-                index: 0,
-                buttonIcon: Icon(Icons.gps_fixed),
-                backgroundColor: Color(0xfff44336),
-                pressedColor: Color(0xff1a237e)),
-            PadButtonItem(
-                supportedGestures: [
-                  Gestures.TAPDOWN,
-                  Gestures.TAPUP,
-                  Gestures.LONGPRESSUP
-                ],
-                index: 1,
-                buttonIcon: Icon(Icons.notifications_active),
-                backgroundColor: Color(0xff40c4ff),
-                pressedColor: Color(0xff1a237e)),
-            PadButtonItem(
-                index: 2,
-                buttonText: 'AutoFire',
-                backgroundColor: Color(0xff4caf50),
-                pressedColor: Color(0xff1a237e)),
-          ],
+          buttons: PAD_BUTTON_ITEMS,
         )
       ],
     );
@@ -130,18 +111,18 @@ class _ControlsScreenState extends State<ControlsScreen> {
         children: [
           body,
           Positioned(
+            child: SpeedSlider(writeSpeed: (newValue) {
+              print('Gui di toc do.....');
+              print("speed $newValue");
+              _channel.sink.add('speed:$newValue');
+            }),
+            left: 0,
+            top: MediaQuery.of(context).size.height / 2 - 140,
+          ),
+          Positioned(
             right: MediaQuery.of(context).size.width / 2 - 100,
-            child: Container(
-              alignment: Alignment.center,
-              width: 200,
-              decoration: BoxDecoration(
-                  color: Colors.black38,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey)),
-              height: 30,
-              child: Text(
-                _ipAddress,
-              ),
+            child: BoxIp(
+              ip: _ipAddress,
             ),
             bottom: 10,
           ),
