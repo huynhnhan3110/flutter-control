@@ -26,8 +26,10 @@ class _SpeedSliderState extends State<SpeedSlider> {
         interval: 30,
         onChanged: (newValue) {
           if (_value != newValue) {
-            _value = newValue;
-            widget.writeSpeed(newValue);
+            setState(() {
+              _value = newValue;
+              widget.writeSpeed(newValue);
+            });
           }
         },
       ),

@@ -60,14 +60,14 @@ class _ConfigurationDialogState extends State<ConfigurationDialog> {
               margin: const EdgeInsets.symmetric(vertical: 15),
               width: 160,
               child: TextField(
-                autofocus: true,
+                autofocus: false,
                 keyboardType: TextInputType.number,
                 controller: _ipAddressController,
                 style: TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0),
-                    hintText: '192.168.1.56',
+                    hintText: '192.168.1.200',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25))),
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import './screens/controls_screen.dart';
 
@@ -16,9 +18,10 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ControlsScreen(),
-      theme: ThemeData.dark(),
+      
+      theme: ThemeData(brightness: Brightness.dark,fontFamily: 'OpenSans'),
       debugShowCheckedModeBanner: false,
+      home: ControlsScreen(),
       title: 'WIFIESP8266',
     );
   }
