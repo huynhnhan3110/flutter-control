@@ -73,11 +73,11 @@ class _ControlsScreenState extends State<ControlsScreen> {
     }
     if (buttonIndex == 0) {
       print("fire");
-     
-        _channel.sink.add('Fire');
+
+      _channel.sink.add('Fire');
     }
     if (buttonIndex == 2) {
-        _channel.sink.add('AutoFire');
+      _channel.sink.add('AutoFire');
     }
   }
 
@@ -136,9 +136,9 @@ class _ControlsScreenState extends State<ControlsScreen> {
                   'assets/images/speedometer.png',
                   width: 27,
                 ),
-                SpeedSlider(writeSpeed: (newValue)  {
+                SpeedSlider(writeSpeed: (newValue) {
                   print("speed $newValue");
-                   _channel.sink.add('s$newValue');
+                  _channel.sink.add('s$newValue');
                 }),
               ],
             ),
@@ -220,9 +220,6 @@ class _ControlsScreenState extends State<ControlsScreen> {
 
   onError(err, StackTrace stackTrace) {
     print("websocket error:" + err.toString());
-    // if (stackTrace != null) {
-    //   // print(stackTrace);
-    // }
   }
 
   void close() {
